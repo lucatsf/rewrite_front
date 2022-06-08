@@ -8,7 +8,9 @@ export default function Home() {
   const { register, handleSubmit } = useForm();
   const getTextareaRef = useRef<HTMLTextAreaElement>(null)
   const [ showNewText, setShowNewText ] = useState(false)
-  const [ newText, setNewText ] = useState({})
+  const [ newText, setNewText ] = useState('')
+  const [ textLength, setTextLength ] = useState(0)
+  const [ textWords, setTextWords ] = useState(0)
 
   function handleTextarea() {
     if (getTextareaRef.current?.value) {
@@ -18,7 +20,9 @@ export default function Home() {
       .then(({ data }) => {
         if (data.newText) {
           setShowNewText(true)
-          setNewText(data.newText)
+          setNewText(data.newText.text[0])
+          setTextLength(data.newText.textLength)
+          setTextWords(data.newText.textWords)
         }
       })
     }
@@ -68,11 +72,11 @@ export default function Home() {
               { showNewText ? (
                   <>
                     <Text pt={10}>
-                      { newText.text[0] }
+                      { newText }
                     </Text>
 
                     <Box>
-                      Total de caracteres: { newText.textLength } | Total de palavras: { newText.textWords }
+                      Total de caracteres: { textLength } | Total de palavras: { textWords }
                     </Box>
                   </>
                 ) : (<></>)
