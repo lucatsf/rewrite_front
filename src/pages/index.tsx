@@ -11,9 +11,11 @@ export default function Home() {
   const [ newText, setNewText ] = useState('')
   const [ textLength, setTextLength ] = useState(0)
   const [ textWords, setTextWords ] = useState(0)
+  const [ isLoading, setIsLoading ] = useState(false)
 
   function handleTextarea() {
     if (getTextareaRef.current?.value) {
+      setIsLoading(true)
       api.post('rewrite', {
         text: getTextareaRef.current?.value
       })
@@ -24,6 +26,7 @@ export default function Home() {
           setTextLength(data.newText.textLength)
           setTextWords(data.newText.textWords)
         }
+        setIsLoading(false)
       })
     }
   }
@@ -65,6 +68,8 @@ export default function Home() {
                 mt={6}
                 colorScheme="blue"
                 type="submit"
+                isLoading={isLoading}
+                loadingText='Submitting'
               >
                 Reescrever texto
               </Button>
